@@ -269,6 +269,10 @@ pub enum PropertyValue {
         id: PropertyId,
         select: Option<SelectedValue>,
     },
+    Status {
+        id: PropertyId,
+        status: Option<SelectedValue>,
+    },
     MultiSelect {
         id: PropertyId,
         multi_select: Option<Vec<SelectedValue>>,

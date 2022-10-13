@@ -195,6 +195,17 @@ pub struct SelectedValue {
     pub color: Color,
 }
 
+/// Must set either id or name
+#[derive(Serialize, Deserialize, Debug, Eq, PartialEq, Clone)]
+pub struct WriteSelectedValue {
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub id: Option<SelectOptionId>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub name: Option<String>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub color: Option<Color>,
+}
+
 #[derive(Serialize, Deserialize, Debug, Eq, PartialEq, Clone)]
 #[serde(untagged)]
 pub enum DateOrDateTime {
@@ -205,7 +216,9 @@ pub enum DateOrDateTime {
 #[derive(Serialize, Deserialize, Debug, Eq, PartialEq, Clone)]
 pub struct DateValue {
     pub start: DateOrDateTime,
+    #[serde(skip_serializing_if = "Option::is_none")]
     pub end: Option<DateOrDateTime>,
+    #[serde(skip_serializing_if = "Option::is_none")]
     pub time_zone: Option<String>,
 }
 
@@ -336,6 +349,56 @@ pub enum PropertyValue {
     LastEditedBy {
         id: PropertyId,
         last_edited_by: User,
+    },
+}
+
+/// Like PropertyValue, but doesn't have id's or read-only properties like created_by.
+#[derive(Serialize, Deserialize, Debug, Eq, PartialEq, Clone)]
+#[serde(tag = "type")]
+#[serde(rename_all = "snake_case")]
+pub enum WritePropertyValue {
+    Title {
+        title: Vec<RichText>,
+    },
+    #[serde(rename = "rich_text")]
+    Text {
+        rich_text: Vec<RichText>,
+    },
+    Number {
+        number: Option<Number>,
+    },
+    Select {
+        select: Option<WriteSelectedValue>,
+    },
+    Status {
+        status: Option<WriteSelectedValue>,
+    },
+    MultiSelect {
+        multi_select: Option<Vec<WriteSelectedValue>>,
+    },
+    Date {
+        date: Option<DateValue>,
+    },
+    Relation {
+        relation: Option<Vec<RelationValue>>,
+    },
+    People {
+        people: Vec<User>,
+    },
+    Files {
+        files: Option<Vec<FileReference>>,
+    },
+    Checkbox {
+        checkbox: bool,
+    },
+    Url {
+        url: Option<String>,
+    },
+    Email {
+        email: Option<String>,
+    },
+    PhoneNumber {
+        phone_number: String,
     },
 }
 

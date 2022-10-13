@@ -1,4 +1,5 @@
 pub mod error;
+pub mod page;
 pub mod paging;
 pub mod properties;
 pub mod search;
@@ -7,7 +8,7 @@ mod tests;
 pub mod text;
 pub mod users;
 
-use crate::models::properties::{PropertyConfiguration, PropertyValue};
+use crate::models::properties::{PropertyConfiguration, PropertyValue, WritePropertyValue};
 use crate::models::text::{RichText, TextColor};
 use crate::Error;
 use serde::{Deserialize, Serialize};
@@ -178,6 +179,12 @@ impl Properties {
             _ => None,
         })
     }
+}
+
+#[derive(Serialize, Deserialize, Debug, Eq, PartialEq, Clone)]
+pub struct WriteProperties {
+    #[serde(flatten)]
+    pub properties: HashMap<String, WritePropertyValue>,
 }
 
 #[derive(Serialize, Deserialize, Debug, Eq, PartialEq, Clone)]

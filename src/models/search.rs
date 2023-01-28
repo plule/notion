@@ -252,6 +252,7 @@ pub enum PropertyCondition {
     Checkbox(CheckboxCondition),
     Select(SelectCondition),
     MultiSelect(MultiSelectCondition),
+    Status(SelectCondition),
     Date(DateCondition),
     People(PeopleCondition),
     Files(FilesCondition),
